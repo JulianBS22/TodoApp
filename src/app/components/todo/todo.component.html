@@ -1,27 +1,42 @@
 <section class="todolist-wrapper">
-  <h1 class="title">TODO APP</h1>
-  <div class="new-todo">
-    <input type="text" placeholder="Escribe la nueva tarea" />
-    <button>+</button>
-  </div>
+    <h1 class="title">TODO APP</h1>
+    <div class="new-todo">
+        <input type="text" placeholder="Escribe la nueva tarea" />
+        <button>+</button>
+    </div>
 
-  <div class="filters">
-    <button>Todas</button>
-    <button>Activas</button>
-    <button>Completadas</button>
-</div>
+    <div class="filters">
+        <button (click)="changeFilter('all')" [class.active]="filter() === 'all'">
+            Todas
+        </button>
+        <button (click)="changeFilter('active')" [class.active]="filter() === 'active'">
+            Activas
+        </button>
+        <button (click)="changeFilter('completed')" [class.active]="filter() === 'completed'">
+            Completadas
+        </button>
+    </div>
 
     <ul class="todolist">
-        <!--editando-->
-        <li class="todo">
-            <input type="checkbox" >
-            <label> Título de la tarea</label>
-            <button>Editar</button>
-            <button>Eliminar</button>
-        </li>
+        @for (todo of todolist(); track todo.id )
+         { 
+            @if (todo.editing) {
+                <li class="todo-editing">
+                    <input type="text" placeholder="Editar tarea" />
+                </li>
+                } 
+            @else {
+                <li class="todo">
+                    <input type="checkbox" />
+                    <label> Título de la tarea</label>
+                    <button>Editar</button>
+                    <button>Eliminar</button>
+                </li>
+                }
+
         <!--editado-->
-        <li class="todo-editing">
-            <input type="text" placeholder="Editar tarea">
-        </li>
+
+        }
+        <!--editando-->
     </ul>
 </section>
