@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { FilterType, TodoModel } from '../../models/todo';
+import { Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.css'
 })
@@ -31,8 +33,27 @@ export class TodoComponent {
       },
     ],
   );
-  filter = signal<FilterType>('all')
+  filter = signal<FilterType>('all');
+  newTodo = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(3)],
+  });
   changeFilter (filterString: FilterType) {
     this.filter.set(filterString)
+  }
+  addTodo() {
+    const newTodoTitle = this.newTodo.value.trim();
+    if (this.newTodo.valid && newTodoTitle !== ''){
+      this.todolist.update((prev_todos)=>{
+        return [
+          ...prev_todos,
+          {id:Date.now(),title:newTodoTitle, completed: false},
+        ]
+      })
+      this.newTodo.reset();
+    }else{
+      this.newTodo.reset()
+  }  
+
   }
 }
