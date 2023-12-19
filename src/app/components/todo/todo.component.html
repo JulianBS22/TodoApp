@@ -18,11 +18,11 @@
     </div>
 
     <ul class="todolist">
-        @for (todo of todolist(); track todo.id )
+        @for (todo of todoListFiltered(); track todo.id )
          { 
             @if (todo.editing) {
                 <li class="todo-editing">
-                    <input type="text" placeholder="Editar tarea" />
+                    <input type="text" placeholder="Editar tarea" [value]="todo.title" (keydown.enter)="saveTitleTodo(todo.id, $event)"/>
                 </li>
                 } 
             @else {
